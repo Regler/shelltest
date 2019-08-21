@@ -11,14 +11,30 @@ fi
 done
 
 
+
+if [ $# == 0 ]
+then 
+	filech=`find . -name "*.[ch]"`
+	sum=0
+	for file in $filech
+	do
+		echo "$file 的行数为  ：`cat $file | wc -l` " >>$writename
+		sum=$[ $sum + `cat $file | wc -l` ]
+	done
+	echo "当前目录.c和.h文件的总的行数为 ： $sum" >>$writename
+
+else
+
 for dir in $@
 do
 	filech=`find $dir -name "*.[ch]"`
 	sum=0
 	for file in $filech
 	do
-		sum=$[ $sum + `cat $dir/$file | wc -l` ]
+		echo "$file 的行数为  ：`cat $file | wc -l` " >>$writename
+		sum=$[ $sum + `cat $file | wc -l` ]
 	done
-	echo "$dir 的行数为 ： $sum" >>$writename
+	echo "$dir .c和.h文件的总行数为 ： $sum" >>$writename
 done
+fi
 echo "写入文件  $writename 成功"
